@@ -1,0 +1,11 @@
+{
+  "workbench.editor.customLabels.patterns": {
+    "**/app/layout.{js,jsx,ts,tsx}": "App Router Layout",
+    "**/app/page.{js,jsx,ts,tsx}": "App Router Page",
+    "**/app/error.{js,jsx,ts,tsx}": "App Router Error",
+    "**/app/not-found.{js,jsx,ts,tsx}": "App Router Not Found",
+    "**/app/route.{js,jsx,ts,tsx}": "App Router Route",
+    "**/app/(*)/page.{js,jsx,ts,tsx}": "App Router Page: $1",
+    "**/app/(*)/route.{js,jsx,ts,tsx}": "App Router Route: $1"
+  }
+}
