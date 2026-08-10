@@ -37,24 +37,7 @@ export default function RootLayout({
       className={cn("h-full", "antialiased", geistSans.variable, geistMono.variable, "font-sans", inter.variable)}
     >
      <body className="min-h-screen flex flex-col">
-        <SidebarProvider>
-          <AppSidebar />
-
-          <main className="flex flex-col flex-1">
-            <Navbar />
-
-            <div className="flex-1 p-6">
-              <div className="mb-6 flex items-center gap-3">
-                <SidebarTrigger />
-                <h1 className="text-2xl font-semibold">History</h1>
-              </div>
-
-              {children}
-            </div>
-
-            <Footer />
-          </main>
-        </SidebarProvider>
+       {children}
       </body>
     </html>
   );
