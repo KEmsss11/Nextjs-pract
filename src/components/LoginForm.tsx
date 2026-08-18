@@ -3,6 +3,7 @@
 import { createClient } from "@/lib/supabase/client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export default function LoginForm() {
   const supabase = createClient();
@@ -108,6 +109,17 @@ export default function LoginForm() {
           {loading ? "Logging in..." : "Login"}
         </button>
       </form>
+        
+        <p className="mt-4 text-center text-sm text-gray-500">
+          Don&apos;t have an account?
+        </p>
+
+        <Link
+          href="/auth/register"
+          className="mt-2 block w-full rounded-md border border-slate-800 py-2 text-center text-slate-800 hover:bg-slate-100"
+        >
+          Register
+        </Link>
     </div>
   );
 }

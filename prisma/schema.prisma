@@ -1,0 +1,40 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id         String       @id
+  email      String       @unique
+  firstName String
+  lastName String
+  PhoneNumber String
+
+  region String
+  province String
+  cityMunicipality String
+  barangay String
+  streetAddress String
+  
+  role       Role         @default(USER)
+  createdAt  DateTime     @default(now())
+  PdfHistory PdfHistory[]
+}
+
+model PdfHistory {
+  id            Int      @id @default(autoincrement())
+  userId        String
+  fileName      String
+  extractedText String
+  createdAt     DateTime @default(now())
+  user          User     @relation(fields: [userId], references: [id])
+}
+
+enum Role {
+  ADMIN
+  USER
+}

@@ -1,12 +1,7 @@
 import type { Metadata } from "next";
-import { TooltipProvider } from "@/components/ui/tooltip"
 import { Geist, Geist_Mono, Inter } from "next/font/google";
 import "./globals.css";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
 import { cn } from "@/lib/utils";
-import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
-import { AppSidebar } from "@/components/AppSidebar";
 
 
 const inter = Inter({subsets:['latin'],variable:'--font-sans'});
