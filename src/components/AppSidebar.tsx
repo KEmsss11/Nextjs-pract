@@ -9,12 +9,12 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-
 import {
   ChevronsUpDown,
+  History,
   LayoutDashboard,
   ScanSearch,
-  History,
+  ShieldCheck,
 } from "lucide-react";
 import {
   DropdownMenu,
@@ -27,43 +27,56 @@ import LogoutButton from "@/components/LogoutButton";
 import Image from "next/image";
 import Link from "next/link";
 
-export function AppSidebar() {
+type AppSidebarProps = {
+  isAdmin: boolean;
+};
+
+export function AppSidebar({ isAdmin }: AppSidebarProps) {
   return (
     <Sidebar collapsible="icon">
       <SidebarHeader className="p-4 group-data-[collapsible=icon]:p-2">
         <h2 className="text-xl font-bold group-data-[state=collapsed]:hidden">
-            ScanPDF
+          ScanPDF
         </h2>
-       </SidebarHeader>
+      </SidebarHeader>
 
       <SidebarContent>
         <SidebarMenu>
           <SidebarMenuItem>
-           <SidebarMenuButton render={<Link href="/dashboard" />}>
-            <LayoutDashboard />
-            <span>Dashboard</span>
+            <SidebarMenuButton render={<Link href="/dashboard" />}>
+              <LayoutDashboard />
+              <span>Dashboard</span>
             </SidebarMenuButton>
           </SidebarMenuItem>
 
           <SidebarMenuItem>
             <SidebarMenuButton render={<Link href="/scan" />}>
-            <ScanSearch />
-            <span>PDF Scan</span>
+              <ScanSearch />
+              <span>PDF Scan</span>
             </SidebarMenuButton>
           </SidebarMenuItem>
 
           <SidebarMenuItem>
-           <SidebarMenuButton render={<Link href="/history" />}>
-            <History />
-            <span>History</span>
+            <SidebarMenuButton render={<Link href="/history" />}>
+              <History />
+              <span>History</span>
             </SidebarMenuButton>
           </SidebarMenuItem>
+
+          {isAdmin && (
+            <SidebarMenuItem>
+              <SidebarMenuButton render={<Link href="/admin" />}>
+                <ShieldCheck />
+                <span>Admin Panel</span>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+          )}
         </SidebarMenu>
       </SidebarContent>
 
       <SidebarFooter className="border-t border-white/20 p-2">
         <SidebarMenu>
-         <SidebarMenuItem>
+          <SidebarMenuItem>
             <DropdownMenu>
               <DropdownMenuTrigger
                 render={
@@ -71,42 +84,34 @@ export function AppSidebar() {
                     size="lg"
                     className="h-auto rounded-md p-2 hover:bg-white/10"
                   >
-                  <Image
-                    src="/profile.png"
-                    alt="Profile"
-                    width={36}
-                    height={36}
-                    className="size-9 rounded-full object-cover"
-                  />
+                    <Image
+                      src="/profile.png"
+                      alt="Profile"
+                      width={36}
+                      height={36}
+                      className="size-9 rounded-full object-cover"
+                    />
 
-                  <div className="grid flex-1 text-left text-sm leading-tight group-data-[state=collapsed]:hidden">
-                    <span className="truncate font-semibold">shadcn</span>
-                    <span className="truncate text-xs text-white/70">
-                      m@example.com
-                    </span>
-                  </div>
+                    <div className="grid flex-1 text-left text-sm leading-tight group-data-[state=collapsed]:hidden">
+                      <span className="truncate font-semibold">Account</span>
+                      <span className="truncate text-xs text-white/70">
+                        User menu
+                      </span>
+                    </div>
 
-                  <ChevronsUpDown className="ml-auto size-4 group-data-[state=collapsed]:hidden" />
+                    <ChevronsUpDown className="ml-auto size-4 group-data-[state=collapsed]:hidden" />
                   </SidebarMenuButton>
                 }
               />
 
               <DropdownMenuContent side="top" align="end" className="w-56">
-                <DropdownMenuItem>
-                  Profile
-                </DropdownMenuItem>
-
-                <DropdownMenuItem>
-                  Settings
-                </DropdownMenuItem>
-
+                <DropdownMenuItem render={<Link href="/profile" />}>Profile</DropdownMenuItem>
+                <DropdownMenuItem render={<Link href="/settings" />}>Settings</DropdownMenuItem>
                 <DropdownMenuSeparator />
-
                 <LogoutButton />
               </DropdownMenuContent>
             </DropdownMenu>
           </SidebarMenuItem>
-          
         </SidebarMenu>
       </SidebarFooter>
     </Sidebar>
