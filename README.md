@@ -1,37 +1,68 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# pract-nextjs
 
-## Getting Started
+A Next.js application using Supabase authentication, PostgreSQL, and Prisma.
 
-First, run the development server:
+## Prerequisites
+
+- Node.js 20 or later
+- pnpm 9 or later (`corepack enable` can install the bundled pnpm version)
+- A PostgreSQL database
+- A Supabase project
+
+## Clone and install
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone <your-repository-url>
+cd pract-nextjs
+corepack enable
+pnpm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Configure environment variables
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Create a `.env.local` file in the project root. Do not commit this file.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```env
+DATABASE_URL="postgresql://USER:PASSWORD@HOST:5432/DATABASE?sslmode=require"
+NEXT_PUBLIC_SUPABASE_URL="https://your-project.supabase.co"
+NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY="your-supabase-publishable-key"
+```
 
-## Learn More
+Get the Supabase URL and publishable key from your Supabase project settings. Set `DATABASE_URL` to the PostgreSQL connection string for the database used by Prisma.
 
-To learn more about Next.js, take a look at the following resources:
+## Set up the database
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Apply the committed Prisma migrations and generate the Prisma client:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```bash
+pnpm prisma migrate deploy
+pnpm prisma generate
+```
 
-## Deploy on Vercel
+For local schema changes during development, use:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```bash
+pnpm prisma migrate dev --name <migration-name>
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
-## Nextjs-pract
+## Run the app
+
+```bash
+pnpm dev
+```
+
+Open [http://localhost:3000](http://localhost:3000).
+
+## Useful commands
+
+```bash
+pnpm lint       # Run ESLint
+pnpm build      # Create a production build
+pnpm start      # Run the production build
+```
+
+## Notes
+
+- The Prisma schema is at `prisma/schema.prisma`.
+- Supabase is used for authentication; configure its allowed redirect URLs to include your local and production application URLs.
+- This project uses the `pnpm-lock.yaml` lockfile. Use pnpm to keep dependency versions consistent.

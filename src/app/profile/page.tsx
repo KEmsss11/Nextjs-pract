@@ -5,17 +5,11 @@ import { SidebarProvider } from "@/components/ui/sidebar";
 import { prisma } from "@/lib/prisma";
 import { Button } from "@/components/ui/button"
 
-import {
-  Mail,
-  MapPin,
-  Phone,
-  Calendar,
-} from "lucide-react";
+
+import { Mail, MapPin, Camera, Calendar } from "lucide-react";
 import {
   Card,
-  CardAction,
   CardContent,
-  CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
@@ -27,7 +21,6 @@ import {
   AvatarFallback,
   AvatarImage,
 } from "@/components/ui/avatar"
-import { Badge, PlusIcon } from "lucide-react";
 
 export default async function ProfilePage() {
     const supabase = await createClient();
@@ -73,52 +66,57 @@ const isAdmin = appUser?.role === "ADMIN";
         <AppSidebar isAdmin={isAdmin} /> 
             
 
-              <main className="flex-1 p-6">
+              <main className="min-w-0 flex-1 p-4 sm:p-6">
                 <h1 className="text-3xl font-bold">Profile</h1>
                  <p className="mt-2">Edit your profile information here.</p>
 
-                  <Card className="mt-6 w-full max-w-lg">
-                    <CardHeader>
-                        <div className="flex items-center justify-center">
-                            <Avatar className="h-24 w-24">
+                  <Card className="mt-6 w-full">
+                    <CardHeader className="p-4 sm:p-6">
+                        <div className="flex w-full items-start gap-4 sm:gap-6">
+                            <Avatar className="h-20 w-20 shrink-0 sm:h-24 sm:w-24">
                                 <AvatarImage
                                     src="https://github.com/shadcn.png"
                                     alt="@shadcn"
                                     className="grayscale"
                             />
                             <AvatarFallback>CN</AvatarFallback>
-                             <AvatarBadge>
-                                <PlusIcon />
+                             <AvatarBadge className="!size-6">
+                                <Camera className="!size-6" />
                             </AvatarBadge>
                         </Avatar>
-                        <CardTitle className="text-lg font-semibold ml-4 w-full max-w-md">
-                            {appUser?.firstName || "First Name"} {appUser?.lastName || "Last Name"}
-                        </CardTitle>
-                      <CardDescription className="inline-flex w-fit whitespace-nowrap rounded-full bg-gray-100 px-10 py-1">
-                        Pro Member
-                        </CardDescription>
-                        </div>
-                        <CardDescription className="text-sm">
-                        <div className="mt-2 flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
-                            <div className="flex items-center gap-1">
+                        <div className="min-w-0 space-y-2">
+                          <div className="flex flex-wrap items-center gap-2">
+                            <CardTitle className="text-xl font-semibold sm:text-2xl">
+                              {appUser?.firstName || "First Name"} {appUser?.lastName || "Last Name"}
+                            </CardTitle>
+                            <span className="inline-flex items-center rounded-full bg-muted px-3 py-0.5 text-xs font-medium text-muted-foreground">
+                              Pro Member
+                            </span>
+                          </div>
+                          <p className="text-sm text-muted-foreground sm:text-base">
+                            {appUser?.role === "ADMIN" ? "Administrator" : "Member"}
+                          </p>
+                          <div className="flex flex-col gap-2 pt-1 text-sm text-muted-foreground sm:flex-row sm:flex-wrap sm:items-center sm:gap-x-5 sm:gap-y-2">
+                            <div className="flex min-w-0 items-center gap-2">
                                 <Mail className="h-4 w-4" />
-                                <span>{appUser?.email}</span>
+                                <span className="truncate">{appUser?.email}</span>
                             </div>
 
-                            <div className="flex items-center gap-1">
+                            <div className="flex min-w-0 items-center gap-2">
                                 <MapPin className="h-4 w-4" />
-                                <span>{cityName}</span>
+                                <span className="truncate">{cityName || "Location not set"}</span>
                             </div>
 
-                            <div className="flex items-center gap-1">
+                            <div className="flex items-center gap-2">
                                 <Calendar className="h-4 w-4" />
-                                <span> Joined: {" "}
-                                {appUser?.createdAt &&
-                                    new Date(appUser.createdAt).toLocaleDateString()}
+                                <span>Joined: {appUser?.createdAt
+                                  ? new Date(appUser.createdAt).toLocaleDateString()
+                                  : "-"}
                                 </span>
                             </div>
-                            </div>
-                        </CardDescription>
+                          </div>
+                        </div>
+                      </div>
                     </CardHeader>
                     <CardContent className="-mb-(--card-spacing)">
                         <div className="-mx-(--card-spacing) max-h-48 space-y-4 overflow-y-scroll border-t bg-muted/50 px-(--card-spacing) py-4 text-sm leading-relaxed">
