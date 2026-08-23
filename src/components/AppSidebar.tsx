@@ -29,9 +29,12 @@ import Link from "next/link";
 
 type AppSidebarProps = {
   isAdmin: boolean;
+  firstName?: string;
+  lastName?: string;
 };
 
-export function AppSidebar({ isAdmin }: AppSidebarProps) {
+export function AppSidebar({ isAdmin, firstName, lastName }: AppSidebarProps) {
+
   return (
     <Sidebar collapsible="icon">
       <SidebarHeader className="p-4 group-data-[collapsible=icon]:p-2">
@@ -93,7 +96,9 @@ export function AppSidebar({ isAdmin }: AppSidebarProps) {
                     />
 
                     <div className="grid flex-1 text-left text-sm leading-tight group-data-[state=collapsed]:hidden">
-                      <span className="truncate font-semibold">Account</span>
+                      <span className="truncate font-semibold">
+                        {firstName} {lastName}
+                      </span>
                       <span className="truncate text-xs text-white/70">
                         User menu
                       </span>

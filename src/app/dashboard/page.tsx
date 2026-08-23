@@ -16,14 +16,17 @@ export default async function DashboardPage() {
 
   const appUser = await prisma.user.findUnique({
     where: { id: user.id },
-    select: { role: true },
+    select: { role: true,
+      firstName: true,
+      lastName: true, 
+    },
   });
   const isAdmin = appUser?.role === "ADMIN";
 
   return (
     <SidebarProvider>
       <div className="flex min-h-screen w-full">
-        <AppSidebar isAdmin={isAdmin} />
+        <AppSidebar isAdmin={isAdmin} firstName={appUser?.firstName} lastName={appUser?.lastName} />
 
         <main className="flex-1 p-6">
           <h1 className="text-3xl font-bold">

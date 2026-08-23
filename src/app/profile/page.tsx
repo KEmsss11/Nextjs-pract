@@ -4,8 +4,6 @@ import { AppSidebar } from "@/components/AppSidebar";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { prisma } from "@/lib/prisma";
 import { Button } from "@/components/ui/button"
-
-
 import { Mail, MapPin, Camera, Calendar } from "lucide-react";
 import {
   Card,
@@ -21,28 +19,41 @@ import {
   AvatarFallback,
   AvatarImage,
 } from "@/components/ui/avatar"
+import {
+  Field,
+  FieldDescription,
+  FieldGroup,
+  FieldLabel,
+  FieldLegend,
+  FieldSet,
+} from "@/components/ui/field"
+import { Input } from "@/components/ui/input"
+import {
+  SidebarTrigger,
+} from "@/components/ui/sidebar";
 
 export default async function ProfilePage() {
-    const supabase = await createClient();
+      const supabase = await createClient();
 
-    const {
-        data: { user },
-    } = await supabase.auth.getUser();       
+      const {
+          data: { user },
+      } = await supabase.auth.getUser();       
 
-if (!user) {
-    redirect("/auth/login");
-}
- const appUser = await prisma.user.findUnique({
-    where: { id: user.id },
-    select: {
-        firstName: true,
-        lastName: true,
-        region: true,
-        province: true,
-        cityMunicipality: true,
-        createdAt: true,
-        email: true,
-        role: true,
+  if (!user) {
+      redirect("/auth/login");
+  }
+  const appUser = await prisma.user.findUnique({
+      where: { id: user.id },
+      select: {
+          firstName: true,
+          lastName: true,
+          region: true,
+          province: true,
+          cityMunicipality: true,
+          PhoneNumber: true,
+          createdAt: true,
+          email: true,
+          role: true,
     }
   });
   let cityName = appUser?.cityMunicipality ?? "";
@@ -63,10 +74,11 @@ const isAdmin = appUser?.role === "ADMIN";
     return (
     <SidebarProvider>
        <div className="flex min-h-screen w-full">  
-        <AppSidebar isAdmin={isAdmin} /> 
+        <AppSidebar isAdmin={isAdmin} firstName={appUser?.firstName} lastName={appUser?.lastName} /> 
             
 
               <main className="min-w-0 flex-1 p-4 sm:p-6">
+                <SidebarTrigger />
                 <h1 className="text-3xl font-bold">Profile</h1>
                  <p className="mt-2">Edit your profile information here.</p>
 
@@ -119,28 +131,37 @@ const isAdmin = appUser?.role === "ADMIN";
                       </div>
                     </CardHeader>
                     <CardContent className="-mb-(--card-spacing)">
-                        <div className="-mx-(--card-spacing) max-h-48 space-y-4 overflow-y-scroll border-t bg-muted/50 px-(--card-spacing) py-4 text-sm leading-relaxed">
-                        <p>
-                            These terms govern your use of the workspace, including access to
-                            shared documents, project files, and collaboration tools.
-                        </p>
-                        <p>
-                            You are responsible for the content you upload and for ensuring that
-                            your team has the appropriate permissions to view or edit it.
-                        </p>
-                        <p>
-                            We may update features or limits as the service evolves. When those
-                            changes materially affect your workflow, we will notify your
-                            workspace administrators.
-                        </p>
-                        <p>
-                            By continuing, you agree to keep your account credentials secure and
-                            to follow your organization&apos;s acceptable use policies.
-                        </p>
-                        </div>
+                      <FieldSet className="w-full max-w-sm">
+                        <FieldLegend>Personal Information</FieldLegend>
+                        <FieldDescription>
+                          Update your personal details and profile information.
+                        </FieldDescription>
+                        <FieldGroup>
+                         <div className="grid grid-cols-2 gap-10">
+                          <Field>
+                            <FieldLabel htmlFor="firstName">First Name</FieldLabel>
+                            <Input id="firstName" type="text"  defaultValue={appUser?.firstName || ""}/>
+                          </Field>
+                          <Field>
+                            <FieldLabel htmlFor="lastName">Last Name</FieldLabel>
+                            <Input id="lastName" type="text"  defaultValue={appUser?.lastName || ""} />
+                          </Field>
+                          </div>
+                          <div className="grid grid-cols-2 gap-10">
+                            <Field>
+                              <FieldLabel htmlFor="cityMunicipality">City/Municipality</FieldLabel>
+                              <Input id="cityMunicipality" type="text"  defaultValue={cityName || ""} />
+                            </Field>
+                            <Field>
+                              <FieldLabel htmlFor="PhoneNumber">Phone</FieldLabel>
+                              <Input id="PhoneNumber" type="number"  defaultValue={appUser?.PhoneNumber || ""} />
+                            </Field>
+                          </div>
+                        </FieldGroup>
+                      </FieldSet>
                     </CardContent>
                     <CardFooter className="justify-end gap-2">
-                        <Button variant="outline">Decline</Button>
+                        <Button variant="outline" className="text-white hover:bg-black">Decline</Button>
                         <Button>Accept</Button>
                     </CardFooter>
                     </Card>
