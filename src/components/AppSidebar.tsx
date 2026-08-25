@@ -15,7 +15,8 @@ import {
   LayoutDashboard,
   ScanSearch,
   ShieldCheck,
-} from "lucide-react";
+  PackageSearch
+,} from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -63,6 +64,13 @@ export function AppSidebar({ isAdmin, firstName, lastName }: AppSidebarProps) {
             <SidebarMenuButton render={<Link href="/history" />}>
               <History />
               <span>History</span>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+
+           <SidebarMenuItem>
+            <SidebarMenuButton render={<Link href="/products" />}>
+              <PackageSearch />
+              <span>Add Product</span>
             </SidebarMenuButton>
           </SidebarMenuItem>
 
