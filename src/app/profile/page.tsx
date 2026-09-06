@@ -3,12 +3,11 @@ import { redirect } from "next/navigation";
 import { AppSidebar } from "@/components/AppSidebar";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { prisma } from "@/lib/prisma";
-import { Button } from "@/components/ui/button"
 import { Mail, MapPin, Camera, Calendar } from "lucide-react";
+
 import {
   Card,
   CardContent,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
@@ -19,15 +18,7 @@ import {
   AvatarFallback,
   AvatarImage,
 } from "@/components/ui/avatar"
-import {
-  Field,
-  FieldDescription,
-  FieldGroup,
-  FieldLabel,
-  FieldLegend,
-  FieldSet,
-} from "@/components/ui/field"
-import { Input } from "@/components/ui/input"
+import { ProfileForm } from "@/components/ProfileForm";
 import {
   SidebarTrigger,
 } from "@/components/ui/sidebar";
@@ -73,6 +64,7 @@ if (appUser?.cityMunicipality) {
 const isAdmin = appUser?.role === "ADMIN";
     return (
     <SidebarProvider>
+       <SidebarTrigger />
        <div className="flex min-h-screen w-full">  
         <AppSidebar isAdmin={isAdmin} firstName={appUser?.firstName} lastName={appUser?.lastName} /> 
             
@@ -131,39 +123,13 @@ const isAdmin = appUser?.role === "ADMIN";
                       </div>
                     </CardHeader>
                     <CardContent className="-mb-(--card-spacing)">
-                      <FieldSet className="w-full max-w-sm">
-                        <FieldLegend>Personal Information</FieldLegend>
-                        <FieldDescription>
-                          Update your personal details and profile information.
-                        </FieldDescription>
-                        <FieldGroup>
-                         <div className="grid grid-cols-2 gap-10">
-                          <Field>
-                            <FieldLabel htmlFor="firstName">First Name</FieldLabel>
-                            <Input id="firstName" type="text"  defaultValue={appUser?.firstName || ""}/>
-                          </Field>
-                          <Field>
-                            <FieldLabel htmlFor="lastName">Last Name</FieldLabel>
-                            <Input id="lastName" type="text"  defaultValue={appUser?.lastName || ""} />
-                          </Field>
-                          </div>
-                          <div className="grid grid-cols-2 gap-10">
-                            <Field>
-                              <FieldLabel htmlFor="cityMunicipality">City/Municipality</FieldLabel>
-                              <Input id="cityMunicipality" type="text"  defaultValue={cityName || ""} />
-                            </Field>
-                            <Field>
-                              <FieldLabel htmlFor="PhoneNumber">Phone</FieldLabel>
-                              <Input id="PhoneNumber" type="number"  defaultValue={appUser?.PhoneNumber || ""} />
-                            </Field>
-                          </div>
-                        </FieldGroup>
-                      </FieldSet>
+                      <ProfileForm
+                        firstName={appUser?.firstName}
+                        lastName={appUser?.lastName}
+                        cityMunicipality={appUser?.cityMunicipality}
+                        phoneNumber={appUser?.PhoneNumber}
+                      />
                     </CardContent>
-                    <CardFooter className="justify-end gap-2">
-                        <Button variant="outline" className="text-white hover:bg-black">Decline</Button>
-                        <Button>Accept</Button>
-                    </CardFooter>
                     </Card>
               </main>
          </div> 

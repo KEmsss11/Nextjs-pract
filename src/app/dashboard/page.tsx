@@ -3,6 +3,7 @@ import { SidebarProvider } from "@/components/ui/sidebar";
 import { prisma } from "@/lib/prisma";
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
+import { SidebarTrigger } from "@/components/ui/sidebar";
 
 export default async function DashboardPage() {
   const supabase = await createClient();
@@ -25,10 +26,12 @@ export default async function DashboardPage() {
 
   return (
     <SidebarProvider>
+       <SidebarTrigger />
       <div className="flex min-h-screen w-full">
         <AppSidebar isAdmin={isAdmin} firstName={appUser?.firstName} lastName={appUser?.lastName} />
 
         <main className="flex-1 p-6">
+             <SidebarTrigger />
           <h1 className="text-3xl font-bold">
             {isAdmin ? "Admin Dashboard" : "Dashboard"}
           </h1>

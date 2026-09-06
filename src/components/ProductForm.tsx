@@ -3,17 +3,28 @@
 import { FormEvent, useState } from "react";
 import { Button } from "@/components/ui/button"
 import { toast } from "@/components/ui/toast"
-
+import { useRouter } from "next/navigation";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
 
 
 export default function ProductForm() {
+      const router = useRouter();
+
     //Product name
     const [name, setName] = useState("");
     //Product description
     const [description, setDesciption] = useState("");
     //Product price
     const [price, setPrice] = useState("");
-
+    //Dialog open state for close dialog after submission
+    const [open, setOpen] = useState(false);
 
     //This is where submission handle form
     async function handleSumbit(event: FormEvent<HTMLFormElement>)
@@ -38,6 +49,11 @@ export default function ProductForm() {
             setName("");
             setDesciption("");
             setPrice("");
+             router.refresh();
+
+
+             //set the open state to false to close the dialog after submission
+            setOpen(false);
 
            toast.add({
             title: "success",
@@ -54,17 +70,26 @@ export default function ProductForm() {
     }
 
     return(
-        <div className="max-w-xl">
-            <h1 className="mb-6 text-3xl font-bold">
-                Create Product
-            </h1>
-
+        <Dialog open={open} onOpenChange={setOpen}>
+            <DialogTrigger render={<Button variant="outline">Add Product</Button>} />
+             <DialogContent className="sm:max-w-sm">
             {/* Product form */}
             <form onSubmit={handleSumbit} className="space-y-5 rounded-lg border p-6 shadow-sm">
                 
                 {/* ========================= */}
                 {/* PRODUCT NAME */}
                 {/* ========================= */}
+             
+         <DialogHeader>
+            <DialogTitle>
+              Create Product
+            </DialogTitle>
+
+            <DialogDescription>
+              Enter the product information below and click
+              Create Product when you are finished.
+            </DialogDescription>
+          </DialogHeader>
 
                 <div className="space-y-2">
                     <label htmlFor="name" className="block text-sm font-medium">Product Name <span className="text-red-500">*</span></label>
@@ -125,14 +150,16 @@ export default function ProductForm() {
                <Button
                     type="submit"
                     variant="outline"
-                    className="hover:text-gray-500"
+                    className="text-white hover:text-gray-500"
                 >
                     Create Product
                 </Button>
 
-
+             
             </form>
-        </div>
+            </DialogContent>  
+            </Dialog>
+     
     )
 
 }

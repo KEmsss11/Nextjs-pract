@@ -3,6 +3,7 @@
 import { createClient } from "@/lib/supabase/client";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { toast } from "./ui/toast";
 
 type PsgcLocation = {
   code: string;
@@ -15,6 +16,7 @@ export default function RegisterForm() {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confrimPassword, setConfirmPassword] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState(""); 
   const [phoneNumber, setPhoneNumber] = useState("");
@@ -93,6 +95,13 @@ useEffect(() => {
       setLoading(false);
       return;
     }
+    if (password !== confrimPassword){
+      toast.add({
+        type: "error",
+        description: "Password do not match.",
+      });
+      return;
+    }
 
     if (data.user) {
        const response = await fetch("/api/users", {
@@ -122,6 +131,7 @@ useEffect(() => {
     }
     setEmail(""); 
     setPassword("");
+    setConfirmPassword("");
     setFirstName("");
     setLastName("");
     setPhoneNumber("");
@@ -391,7 +401,29 @@ useEffect(() => {
           />
         </div>
 
-        {error && (
+        <div>
+          <label
+            htmlFor="confirmPassword"
+            className="mb-1 block text-sm font-medium text-gray-500"
+          >
+            Confirm Password
+          </label>
+
+          <input
+            id="confirmPassword"
+            type="password"
+            value={confrimPassword}
+            onChange={(e) =>
+              setConfirmPassword(e.target.value)
+            }
+            className="w-full rounded-md border p-2 text-gray-500"
+            placeholder="••••••••"
+            minLength={6}
+            required
+          />
+        </div>
+
+          {error && (
           <p className="text-sm text-red-500">
             {error}
           </p>
@@ -402,6 +434,7 @@ useEffect(() => {
             {message}
           </p>
         )}
+
 
         <button
           type="submit"
